@@ -1,3 +1,3 @@
-This is a text to get
-another text
-last text
+This-is-a-line-to-read
+And-this-is-another
+Last-line

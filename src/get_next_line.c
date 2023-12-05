@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:29:01 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/05 17:14:05 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/05 22:20:58 by nige42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,57 +46,76 @@ char	*ft_strjoin(char *keep, char *str)
 	int		j;	
 	int keep_size;
 	char *temp;
+	static char *stock;
 	
+
 	j = 0;
 	keep_size = ft_strlen(keep);
-	temp = malloc(keep_size + BUFFER_SIZE * sizeof(char));
+	temp = malloc(keep_size + (BUFFER_SIZE) * sizeof(char));
 	i = 0;
+	
 	while (keep[i] != '\0')
 	{
 		temp[i] = keep[i];
 		i++;
 	}
-	while (j < BUFFER_SIZE)	
+	while (j < BUFFER_SIZE && str[j] != '\n')	
 	{
 		temp[i] = str[j];		
 		j++;
 		i++;
 	}
 	temp[i] = '\0';
-
+	i = j;
+	stock = malloc(BUFFER_SIZE - j + 1 * sizeof(char));
+	while (i < BUFFER_SIZE)
+	{
+		stock[i - j] = str[i];
+		i++;
+	}
+	str[i - j] = '\0';
 	return (temp);
 }
+
+int	found_newline(char *str)
+{
+	int i;
+
+	i = 0;
+	while (i < BUFFER_SIZE)
+	{
+		if (str[i] == '\n')
+			return (1);
+		i++;
+	}	
+	return (0);
+}
+
+
+
+
+
 
 char	*get_next_line(int fd)
 {
 	
-	char *ptr;
+	static char *ptr;
 	char *keep;
-	int	read_size;
-	int	i;
+	int nread;
 
-	i = 0;
-	keep = malloc((BUFFER_SIZE) * sizeof(char));
-	if (!keep)
-		return (0);
-	ft_memset(keep, '\0');
-
-	ptr = malloc((BUFFER_SIZE) * sizeof(char));
+	keep = malloc(0);
+	ptr = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!ptr)
 		return (0);
-	ft_memset(ptr, '\0');
-	i = 0;
-	read_size = read(fd, ptr, BUFFER_SIZE);
-	while (ptr[i] != '\n')
+	while (*ptr != '\n')
 	{
-		i++;
-		if(i == BUFFER_SIZE)
-		{
-			keep = ft_strjoin(keep, ptr);
-			read_size = read(fd, ptr, BUFFER_SIZE);
-			i = 0;
-		}
+		nread = read(fd, ptr, BUFFER_SIZE);
+
+		printf(" -- %d -- ", nread);
+		keep = ft_strjoin(keep, ptr);
+		if (found_newline(ptr))	
+			break ;
+		ptr++;
 	}
-	free(ptr);
 	return (keep);
 }

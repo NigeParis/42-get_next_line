@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:30:46 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/05 13:57:17 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/05 14:09:43 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,6 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include "get_next_line.h"
-
-int strjoin(char *ptr)
-{
-	int i;
-
-	i = 0;
-	while(ptr[i])
-	{
-		i++;
-	}
-
-	return (i);
-}
-
-
-
-
 
 
 int	main(void)
@@ -46,19 +29,8 @@ int	main(void)
 
 
 	ptr = get_next_line(fd);
+	printf("%s", ptr);
 
-	while (*ptr != '\0')
-	{
-		while (i < BUFFER_SIZE - 1)
-		{
-			i++;
-			if (ptr[i] != '\0')
-				printf("%c", ptr[i]);
-		}
-		ptr = get_next_line(fd);
-		i = -1;
-	}
-
-
+	free(ptr);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:29:01 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/05 13:52:54 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/05 14:32:49 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,17 @@
 #include <stdlib.h>
 
 
+void	ft_memset(char *str, char c)
+{
+	int i;
 
+	i = 0;
+	while (i < BUFFER_SIZE)
+	{
+		str[i] = c;
+		i++;
+	}
+}
 
 
 
@@ -32,13 +42,17 @@ char	*get_next_line(int fd)
 	ptr = malloc((BUFFER_SIZE) * sizeof(char));
 	if (!ptr)
 		return (0);
-	while (i < BUFFER_SIZE)
-	{
-		ptr[i] = '\0';
-		i++;
-	}
-	read_size = read(fd, ptr, BUFFER_SIZE); 
-//	printf("--%d--", read_size);
-	return (ptr);
+	ft_memset(ptr, '\0');
+	read_size = read(fd, ptr, BUFFER_SIZE);
+	if (read_size < BUFFER_SIZE)
+		printf("HELLO");
 
+
+
+
+
+
+
+ 
+	return (ptr);
 }

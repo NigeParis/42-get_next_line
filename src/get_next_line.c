@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:29:01 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/05 22:20:58 by nige42           ###   ########.fr       */
+/*   Updated: 2023/12/05 22:34:10 by nige42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,20 @@ char	*ft_strjoin(char *keep, char *str)
 	int		j;	
 	int keep_size;
 	char *temp;
-	static char *stock;
+	static char reserve[BUFFER_SIZE + 1];
 	
 
 	j = 0;
 	keep_size = ft_strlen(keep);
 	temp = malloc(keep_size + (BUFFER_SIZE) * sizeof(char));
 	i = 0;
+
+	while (reserve[i] != '\0')
+	{
+		temp[i] = reserve[i];
+		i++;
+	}
+
 	
 	while (keep[i] != '\0')
 	{
@@ -67,10 +74,9 @@ char	*ft_strjoin(char *keep, char *str)
 	}
 	temp[i] = '\0';
 	i = j;
-	stock = malloc(BUFFER_SIZE - j + 1 * sizeof(char));
 	while (i < BUFFER_SIZE)
 	{
-		stock[i - j] = str[i];
+		reserve[i - j] = str[i];
 		i++;
 	}
 	str[i - j] = '\0';
@@ -101,7 +107,6 @@ char	*get_next_line(int fd)
 	
 	static char *ptr;
 	char *keep;
-	int nread;
 
 	keep = malloc(0);
 	ptr = malloc((BUFFER_SIZE + 1) * sizeof(char));
@@ -109,9 +114,8 @@ char	*get_next_line(int fd)
 		return (0);
 	while (*ptr != '\n')
 	{
-		nread = read(fd, ptr, BUFFER_SIZE);
+		read(fd, ptr, BUFFER_SIZE);
 
-		printf(" -- %d -- ", nread);
 		keep = ft_strjoin(keep, ptr);
 		if (found_newline(ptr))	
 			break ;

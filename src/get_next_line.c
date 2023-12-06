@@ -6,13 +6,12 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:29:01 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/05 22:34:10 by nige42           ###   ########.fr       */
+/*   Updated: 2023/12/06 11:52:57 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdio.h>
-#include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
 
@@ -22,38 +21,38 @@ int		ft_strlen(char *str)
 
 	i = 0;
 	while (str[i])
-	{
 		i++;
-	}
 	return (i);
 }
 
-void	ft_memset(char *str, char c)
+int	found_newline(char *str)
 {
 	int i;
 
 	i = 0;
 	while (i < BUFFER_SIZE)
 	{
-		str[i] = c;
+		if (str[i] == '\n')
+			return (1);
 		i++;
-	}
+	}	
+	return (0);
 }
 
 char	*ft_strjoin(char *keep, char *str)
 {
-	int		i;	
-	int		j;	
-	int keep_size;
-	char *temp;
-	static char reserve[BUFFER_SIZE + 1];
+	int			i;	
+	int			j;	
+	int			keep_size;
+	char		*temp;
+	static char	reserve[BUFFER_SIZE];
 	
-
+	keep_size = 0;
 	j = 0;
-	keep_size = ft_strlen(keep);
-	temp = malloc(keep_size + (BUFFER_SIZE) * sizeof(char));
+	if (keep)
+		keep_size = ft_strlen(keep);
+	temp = malloc((keep_size + (BUFFER_SIZE)) * sizeof(char));
 	i = 0;
-
 	while (reserve[i] != '\0')
 	{
 		temp[i] = reserve[i];
@@ -80,25 +79,9 @@ char	*ft_strjoin(char *keep, char *str)
 		i++;
 	}
 	str[i - j] = '\0';
+	free(keep);
 	return (temp);
 }
-
-int	found_newline(char *str)
-{
-	int i;
-
-	i = 0;
-	while (i < BUFFER_SIZE)
-	{
-		if (str[i] == '\n')
-			return (1);
-		i++;
-	}	
-	return (0);
-}
-
-
-
 
 
 
@@ -107,19 +90,26 @@ char	*get_next_line(int fd)
 	
 	static char *ptr;
 	char *keep;
+	size_t r;
+	int i;
 
-	keep = malloc(0);
-	ptr = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	i = 0;
+	keep = malloc(BUFFER_SIZE * sizeof(char));
+	ptr = malloc((BUFFER_SIZE) * sizeof(char));
 	if (!ptr)
 		return (0);
-	while (*ptr != '\n')
+	while (*ptr != '\n' || *ptr != '\0')
 	{
-		read(fd, ptr, BUFFER_SIZE);
-
+	
+		r = read(fd, ptr, (BUFFER_SIZE));
+		
+		printf(" -- %zu -- ", r);
 		keep = ft_strjoin(keep, ptr);
-		if (found_newline(ptr))	
+		if (found_newline(ptr) || r == 0)
 			break ;
 		ptr++;
+		i++;
 	}
+	
 	return (keep);
 }

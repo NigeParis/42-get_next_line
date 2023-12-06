@@ -7,7 +7,7 @@ CFLAGS=-Wall -Wextra -Werror
 SRCS=$(addprefix $(SRC_DIR), $(SRC))
 OBJ=$(SRC:.c=.o)
 HEAD=$(addprefix $(INCLUDE), $(HEADER))
-CCOPTIONS=-c -D BUFFER_SIZE=10
+CCOPTIONS=-c -g3 -D BUFFER_SIZE=5
 SRC_OBJ=$(addprefix $(OBJ_DIR), $(OBJ))
 MAIN_SRC=$(addprefix $(SRC_DIR), $(MAIN))
 MAIN_OBJ=$(addprefix $(OBJ_DIR), $(MAIN:.c=.o))

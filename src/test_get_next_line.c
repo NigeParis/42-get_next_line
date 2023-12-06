@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:30:46 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/05 22:34:37 by nige42           ###   ########.fr       */
+/*   Updated: 2023/12/06 15:35:20 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,26 +23,27 @@ int	main(void)
 
 	fd = open("text.txt", O_RDONLY);
 	if (!fd)
-		return (write(1, "error", BUFFER_SIZE));
-
-
-
-
+		return (write(1, "error",5));
 
 	ptr = get_next_line(fd);
 	printf("\n%s", ptr);
-
-
-	ptr = get_next_line(fd);
-	printf("\n%s", ptr);
-
+	free(ptr);
 
 	ptr = get_next_line(fd);
 	printf("\n%s", ptr);
-
+	free(ptr);
+/*
+	ptr = get_next_line(fd);
+	printf("\n%s", ptr);
+	free(ptr);
 
 	ptr = get_next_line(fd);
 	printf("\n%s", ptr);
+	free(ptr);
 
+	ptr = get_next_line(fd);
+	printf("\n%s", ptr);
+	free(ptr);
+*/
 	return (0);
 }

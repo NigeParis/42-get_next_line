@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:29:01 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/06 11:52:57 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/07 10:31:02 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,15 +90,17 @@ char	*get_next_line(int fd)
 	
 	static char *ptr;
 	char *keep;
-	size_t r;
+	ssize_t r;
 	int i;
 
 	i = 0;
 	keep = malloc(BUFFER_SIZE * sizeof(char));
-	ptr = malloc((BUFFER_SIZE) * sizeof(char));
+	ptr = malloc(BUFFER_SIZE * sizeof(char));
 	if (!ptr)
 		return (0);
-	while (*ptr != '\n' || *ptr != '\0')
+	r = read(fd, ptr, (BUFFER_SIZE));
+	keep = ft_strjoin(keep, ptr);
+	while (*ptr != '\n')
 	{
 	
 		r = read(fd, ptr, (BUFFER_SIZE));
@@ -110,6 +112,6 @@ char	*get_next_line(int fd)
 		ptr++;
 		i++;
 	}
-	
+
 	return (keep);
 }

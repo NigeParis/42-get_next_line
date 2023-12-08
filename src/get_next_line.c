@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:29:01 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/08 22:33:26 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/08 23:11:54 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ char	*get_line_trim(char *get_read)
 	i++;
 	trimmed_read[i] = '\0';
 	
-
+	free(get_read);
 	return (trimmed_read);
 }
 
@@ -157,22 +157,21 @@ char	*get_next_line(int fd)
 {
 	
 	char *get_read;
-//	char *trimmed_read;
 	char *line;
+	char *output;
 	static char *leftover;
 
 	get_read = get_chars(fd);
-//	trimmed_read = get_line_trim(get_read);
 	line = ft_strjoin(leftover, get_read);
 	leftover = get_leftover(get_read);
-	line = get_line_trim(line);
+	output = get_line_trim(line);
 
-
+//	free(leftover);
 
 //	printf("\nget_read          : '%s'",get_read);
 //	printf("\nget_read_trim     : '%s'",trimmed_read);
 //	printf("\nline              : '%s'",line);
 //	printf("\nleftover          : '%s'",leftover);
 
-	return (line);
+	return (output);
 }

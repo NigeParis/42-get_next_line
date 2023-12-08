@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:30:46 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/08 22:34:28 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/08 23:11:28 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,15 @@ int	main(void)
 	ptr = get_next_line(fd);
 	printf("%s", ptr);
 	free(ptr);
-
-	ptr = get_next_line(fd);
-	printf("%s", ptr);
-	free(ptr);
-
-	ptr = get_next_line(fd);
-	printf("%s", ptr);
-	free(ptr);
 /*
+	ptr = get_next_line(fd);
+	printf("%s", ptr);
+	free(ptr);
+
+	ptr = get_next_line(fd);
+	printf("%s", ptr);
+	free(ptr);
+
 	ptr = get_next_line(fd);
 	printf("\n%s", ptr);
 	free(ptr);

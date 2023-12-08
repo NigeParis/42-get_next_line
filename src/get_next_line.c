@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:29:01 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/08 15:32:33 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:32:20 by nige42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*line;
@@ -81,17 +80,30 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (line);
 }
 
-
 char	*get_chars(int fd)
 {
-	char *line;
+	static char *line;
+	char *temp;
 	ssize_t nbytes;
 
-	line = malloc(BUFFER_SIZE + 1* sizeof(char));
-	nbytes = read(fd, line, BUFFER_SIZE);
-	if (nbytes < 1)
-		free(line);
-	line[BUFFER_SIZE + 1] = '\0';
+	temp = malloc(BUFFER_SIZE + 1 * sizeof(char));
+	nbytes = read(fd, temp, BUFFER_SIZE);
+	temp[nbytes + 1] = '\0';
+	line = ft_strjoin(temp, "");
+	printf("  1: --%zu -- ", nbytes);
+	while (nbytes > 0)
+	{
+		printf("3: -%zu-", nbytes);
+		if (ft_strchr(temp, '\n'))
+			break;
+		nbytes = read(fd, temp, BUFFER_SIZE);
+		if (nbytes < 1)
+			break;
+		temp[nbytes + 1] = '\0';
+		line = ft_strjoin(line, temp);
+		printf("2: -%zu-", nbytes);
+	}
+
 	return(line);
 } 
 
@@ -128,19 +140,19 @@ char	*get_next_line(int fd)
 {
 	
 	char *get_read;
-	char *line;
-	static char *leftover;
+//	char *line;
+//	static char *leftover;
 
 	get_read = get_chars(fd);
-	line = ft_strjoin(leftover, get_read);
-	leftover = get_leftover(get_read);
+//	line = ft_strjoin(leftover, get_read);
+//	leftover = get_leftover(get_read);
 
 
 
 
-	printf("\nget_read : %s ",get_read);
-	printf("\nline              : %s ",line);
-	printf("\nleftover : %s ",leftover);
+	printf("\nget_read : %s",get_read);
+//	printf("\nline              : %s ",line);
+//	printf("\nleftover : %s ",leftover);
 
 	return (get_read);
 }

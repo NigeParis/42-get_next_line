@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:29:01 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/07 10:31:02 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/08 15:32:33 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-int		ft_strlen(char *str)
+int		ft_strlen(const char *str)
 {
 	int i;
 
@@ -25,93 +25,122 @@ int		ft_strlen(char *str)
 	return (i);
 }
 
-int	found_newline(char *str)
+
+char	*ft_strchr(const char *s, int c)
 {
-	int i;
+	char			*str;
+	unsigned char	find;
+	int				i;
 
+	find = (unsigned char)c;
+	str = (char *)s;
 	i = 0;
-	while (i < BUFFER_SIZE)
+	if (find == '\0')
 	{
-		if (str[i] == '\n')
-			return (1);
-		i++;
-	}	
-	return (0);
-}
-
-char	*ft_strjoin(char *keep, char *str)
-{
-	int			i;	
-	int			j;	
-	int			keep_size;
-	char		*temp;
-	static char	reserve[BUFFER_SIZE];
-	
-	keep_size = 0;
-	j = 0;
-	if (keep)
-		keep_size = ft_strlen(keep);
-	temp = malloc((keep_size + (BUFFER_SIZE)) * sizeof(char));
-	i = 0;
-	while (reserve[i] != '\0')
+		while (*str)
+			str++;
+		return (str);
+	}
+	while (str[i])
 	{
-		temp[i] = reserve[i];
+		if (find == str[i])
+			return (&str[i]);
 		i++;
 	}
-
-	
-	while (keep[i] != '\0')
-	{
-		temp[i] = keep[i];
-		i++;
-	}
-	while (j < BUFFER_SIZE && str[j] != '\n')	
-	{
-		temp[i] = str[j];		
-		j++;
-		i++;
-	}
-	temp[i] = '\0';
-	i = j;
-	while (i < BUFFER_SIZE)
-	{
-		reserve[i - j] = str[i];
-		i++;
-	}
-	str[i - j] = '\0';
-	free(keep);
-	return (temp);
+	return (NULL);
 }
 
 
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	char	*line;
+	size_t	index;
+	size_t	len;
+
+	index = 0;
+	len = 0;
+	if (!s1)
+		len = (ft_strlen(s2) + 1);
+	else
+		len = (ft_strlen(s1) + ft_strlen(s2) + 1);
+	line = (char *)malloc(len * sizeof(char));
+	if (!line)
+		return (NULL);
+	len = 0;
+	if (s1)
+	{
+		while (s1[index] != '\0')
+		{
+			line[index] = s1[index];
+			index++;
+		}
+	}
+	while (s2[len] != '\n')
+		line[index++] = s2[len++];
+	line[index] = '\0';
+	return (line);
+}
+
+
+char	*get_chars(int fd)
+{
+	char *line;
+	ssize_t nbytes;
+
+	line = malloc(BUFFER_SIZE + 1* sizeof(char));
+	nbytes = read(fd, line, BUFFER_SIZE);
+	if (nbytes < 1)
+		free(line);
+	line[BUFFER_SIZE + 1] = '\0';
+	return(line);
+} 
+
+char	*get_leftover(char *get_read)
+{
+	char	*found;
+	char	*copy;
+	static char	*leftover;
+	int		leftover_size;	
+	int 	i;	
+	
+	i = 0;
+	leftover_size = 0;
+	found = ft_strchr(get_read, '\n');
+	found++;
+	copy = found;
+	while (*found)
+	{
+		found++;
+		leftover_size++;
+	}
+	leftover = malloc(leftover_size * sizeof(char));
+	while (i < leftover_size)
+	{
+		leftover[i] = *copy;
+		i++;
+		copy++;
+	}
+	leftover[leftover_size] = '\0';
+	return (leftover);
+}
 
 char	*get_next_line(int fd)
 {
 	
-	static char *ptr;
-	char *keep;
-	ssize_t r;
-	int i;
+	char *get_read;
+	char *line;
+	static char *leftover;
 
-	i = 0;
-	keep = malloc(BUFFER_SIZE * sizeof(char));
-	ptr = malloc(BUFFER_SIZE * sizeof(char));
-	if (!ptr)
-		return (0);
-	r = read(fd, ptr, (BUFFER_SIZE));
-	keep = ft_strjoin(keep, ptr);
-	while (*ptr != '\n')
-	{
-	
-		r = read(fd, ptr, (BUFFER_SIZE));
-		
-		printf(" -- %zu -- ", r);
-		keep = ft_strjoin(keep, ptr);
-		if (found_newline(ptr) || r == 0)
-			break ;
-		ptr++;
-		i++;
-	}
+	get_read = get_chars(fd);
+	line = ft_strjoin(leftover, get_read);
+	leftover = get_leftover(get_read);
 
-	return (keep);
+
+
+
+	printf("\nget_read : %s ",get_read);
+	printf("\nline              : %s ",line);
+	printf("\nleftover : %s ",leftover);
+
+	return (get_read);
 }

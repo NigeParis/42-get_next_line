@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:29:01 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/09 03:35:41 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/09 14:02:57 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int		ft_strlen(const char *str)
 	int i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	while (str[i])
 		i++;
 	return (i);
@@ -83,10 +85,11 @@ char	*ft_strchr(const char *s, int c)
 
 char	*get_chars(int fd)
 {
-	char *line;
-	char *temp;
-	char *tmp;
-	ssize_t nbytes = 1;
+	char	*line;
+	char 	*temp;
+	char 	*tmp;
+	ssize_t	 nbytes = 1;
+
 
 	line = "";
 	temp = malloc(BUFFER_SIZE + 1 * sizeof(char));
@@ -95,8 +98,11 @@ char	*get_chars(int fd)
 		if (ft_strchr(temp, '\n'))
 			break;
 		nbytes = read(fd, temp, BUFFER_SIZE);
-		if (nbytes < 1)
-			break;
+		if (!nbytes)
+		{
+			free(temp);
+			return (NULL);
+		}
 		line = ft_strjoin(line, temp);
 		
 	}
@@ -171,7 +177,11 @@ char	*get_next_line(int fd)
 	char *output;
 	static char *leftover;
 
+	if (fd <= 0 || BUFFER_SIZE <= 0)
+		return (0);
 	get_read = get_chars(fd);
+	if (!get_read)
+		return (NULL);
 	line = ft_strjoin(leftover, get_read);
 	leftover = get_leftover(get_read);
 	output = get_line_trim(line);

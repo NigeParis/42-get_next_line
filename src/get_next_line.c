@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:29:01 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/08 23:11:54 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/09 03:35:41 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		ft_strlen(const char *str)
 	return (i);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*result;
 	size_t	index;
@@ -34,7 +34,10 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	index = 0;
 	len = 0;
 	if (!s1)
-		return ((char *)s2);
+	{
+		s1 = malloc(1 * sizeof(char));
+		s1[0] = '\0';
+	}
 	len = (ft_strlen(s1) + ft_strlen(s2) + 1);
 	result = (char *)malloc(len * sizeof(char));
 	if (!result)
@@ -48,6 +51,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	while (s2[len] != '\0')
 		result[index++] = s2[len++];
 	result[index] = '\0';
+	if (*s1)
+		free(s1);
 	return (result);
 }
 
@@ -80,11 +85,11 @@ char	*get_chars(int fd)
 {
 	char *line;
 	char *temp;
+	char *tmp;
 	ssize_t nbytes = 1;
 
+	line = "";
 	temp = malloc(BUFFER_SIZE + 1 * sizeof(char));
-	temp[0] = '\0';
-	line = ft_strjoin("", "");
 	while (nbytes > 0)
 	{
 		if (ft_strchr(temp, '\n'))
@@ -93,10 +98,14 @@ char	*get_chars(int fd)
 		if (nbytes < 1)
 			break;
 		line = ft_strjoin(line, temp);
+		
 	}
-	
+	free(temp);
+	temp = NULL;
+	tmp = ft_strjoin("", line);
+	free(line);
 
-	return(line);
+	return(tmp);
 } 
 
 char	*get_leftover(char *get_read)
@@ -125,6 +134,7 @@ char	*get_leftover(char *get_read)
 		copy++;
 	}
 	leftover[leftover_size] = '\0';
+//	free (get_read);
 	return (leftover);
 }
 
@@ -148,7 +158,7 @@ char	*get_line_trim(char *get_read)
 	i++;
 	trimmed_read[i] = '\0';
 	
-	free(get_read);
+//	free(get_read);		
 	return (trimmed_read);
 }
 
@@ -166,12 +176,14 @@ char	*get_next_line(int fd)
 	leftover = get_leftover(get_read);
 	output = get_line_trim(line);
 
-//	free(leftover);
-
-//	printf("\nget_read          : '%s'",get_read);
-//	printf("\nget_read_trim     : '%s'",trimmed_read);
-//	printf("\nline              : '%s'",line);
-//	printf("\nleftover          : '%s'",leftover);
-
+	free(get_read);
+	get_read = NULL;
+	free(line);
+	line = NULL;
+/*	printf("\n--get_read          : '%s'",get_read);
+	printf("\n            --output: '%s'",output);
+	printf("\n--line              : '%s'",line);
+	printf("\n--leftover          : '%s'",leftover);
+*/
 	return (output);
 }

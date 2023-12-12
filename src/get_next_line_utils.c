@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 06:03:01 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/12 10:19:06 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/12 10:30:47 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,14 @@ char	*ft_strjoin(char *s1, char *s2)
 	char	*result;
 	size_t	index;
 	size_t	len;
+	int 	flag;
 
 	index = 0;
 	len = 0;
+	flag = 0;
 	if (!s1)
 	{
+		flag = 1;
 		s1 = malloc(1 * sizeof(char));
 		s1[0] = '\0';
 	}
@@ -50,7 +53,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s2[len] != '\0')
 		result[index++] = s2[len++];
 	result[index] = '\0';
-	if (*s1)
+	if (flag)
 		free(s1);
 	return (result);
 }

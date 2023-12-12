@@ -6,13 +6,13 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 06:03:01 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/12 06:04:59 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/12 08:28:20 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int		ft_strlen(const char *str)
+int		ft_strlen(char *str)
 {
 	int i;
 
@@ -24,7 +24,7 @@ int		ft_strlen(const char *str)
 	return (i);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*result;
 	size_t	index;
@@ -51,14 +51,16 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (result);
 }
 
-char	*ft_strchr(const char *s, int c)
+
+
+char	*ft_strchr(char *s, int c)
 {
 	char			*str;
 	unsigned char	find;
 	int				i;
 
-	find = (unsigned char)c;
-	str = (char *)s;
+	find = c;
+	str = s;
 	i = 0;
 	if (find == '\0')
 	{

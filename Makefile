@@ -18,7 +18,7 @@ CC=cc
 SRC_DIR=./src/
 OBJ_DIR=
 INCLUDE=./src/
-SRC=get_next_line.c
+SRC=get_next_line.c get_next_line_utils.c
 MAIN=test_get_next_line.c
 
 

@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:29:01 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/12 07:04:56 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/12 07:14:40 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	ft_linelen(char *line)
 	return (len);
 }
 
-char	*ft_get_line(char *get_read)
+char	*ft_getline(char *get_read)
 {
 	char	*leftover;
 	int 	index;
@@ -60,7 +60,7 @@ char	*ft_get_line(char *get_read)
 	leftover = malloc((len + 2) * sizeof(char));
 	if (!leftover)
 		return (NULL);
-	while (get_read[index] && get_read[index] != '\0')
+	while (get_read[index] && get_read[index] != '\n')
 	{
 		leftover[index] = get_read[index];
 		index++;
@@ -98,8 +98,6 @@ char	*ft_get_newline(char *get_read)
 			break ;
 		i++;
 	}
-	trimmed_read[i] = '\n';
-	i++;
 	trimmed_read[i] = '\0';
 	return (trimmed_read);
 }
@@ -119,7 +117,7 @@ char	*get_next_line(int fd)
 	if (!get_read)
 		return (NULL);
 
-	line = ft_get_line(get_read);
+	line = ft_getline(get_read);
 	output = ft_get_newline(get_read);
 
 

@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:29:01 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/12 16:03:12 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/12 17:22:57 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ char	*get_chars(int fd)
 
 	line = "";
 	temp = malloc(BUFFER_SIZE + 1 * sizeof(char *));
+	temp[0] = '\0';
 	while (nbytes > 0)
 	{
 		if (ft_strchr(temp, '\n'))
@@ -63,14 +64,12 @@ char	*get_leftover(char *get_read)
 //	printf("\ni:::%d--len-%d",i, len);
 	leftover = malloc(((len - i) + 1) * sizeof(char *));
 	j = 0;
-	while (i < len)
+	while (i < len + 1)
 	{
 		leftover[j] = get_read[i];
 		i++;
 		j++;
 	}
-	if (get_read[i] == '\n')
-		leftover[j++] = '\n';
 	leftover[j] = '\0';
 //	printf("\n LEFTOVER --------------------------------%s",leftover);	
 	return (leftover);
@@ -110,7 +109,7 @@ char	*get_next_line(int fd)
 	char *output;
 	static char *leftover;
 
-	if ((fd < 0 || BUFFER_SIZE <= 0))
+	if ((fd <= 0 || BUFFER_SIZE <= 0))
 		return (0);
 	get_read = get_chars(fd);
 	line = ft_strjoin(leftover, get_read);

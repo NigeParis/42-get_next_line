@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 06:03:01 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/12 10:30:47 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/12 16:53:12 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ char	*ft_strjoin(char *s1, char *s2)
 	if (!s1)
 	{
 		flag = 1;
-		s1 = malloc(1 * sizeof(char));
+		s1 = malloc(1 * sizeof(char *));
 		s1[0] = '\0';
 	}
 	len = (ft_strlen(s1) + ft_strlen(s2) + 1);
-	result = (char *)malloc(len * sizeof(char));
+	result = (char *)malloc(len * sizeof(char *));
 	if (!result)
 		return (NULL);
 	len = 0;

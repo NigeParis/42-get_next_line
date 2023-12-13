@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:29:01 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/13 17:27:51 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/13 20:47:47 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,12 @@
 char	*get_chars(int fd)
 {
 	char	*line;
-	char 	*temp;
+	char 	temp[BUFFER_SIZE + 1];
 	char 	*tmp;
 	ssize_t	 nbytes = 1;
 
 
 	line = "";
-	temp = malloc(BUFFER_SIZE + 1 * sizeof(char));
 	temp[0] = '\0';
 	while (nbytes > 0)
 	{
@@ -32,17 +31,15 @@ char	*get_chars(int fd)
 		nbytes = read(fd, temp, BUFFER_SIZE);
 		if (nbytes == -1)
 		{
-			free(temp);
 			return (NULL);
 		}
 		temp[nbytes] = '\0';
-		line = ft_strjoin(line, temp);
+		if (line)
+			line = ft_strjoin(line, temp);
 		
 	}
-	free(temp);
-	temp = NULL;
-	tmp = ft_strjoin("", line);
-
+	tmp = ft_strdup(line);
+	free(line);
 	return(tmp);
 } 
 
@@ -55,15 +52,18 @@ char	*get_leftover(char *leftover, char *get_read)
 	i = 0;
 	while (get_read[i] && get_read[i] != '\n')
 		i++;
-	i++;
+	if (get_read[i] == '\n')
+		i++;
+	
 	j = 0;
-	while (get_read[i] != '\0')
+	while (get_read[i])
 	{
 		leftover[j] = get_read[i];
 		i++;
 		j++;
 	}
 	leftover[j] = '\0';
+	
 	return (leftover);
 }
 
@@ -87,8 +87,13 @@ char	*get_line_trim(char *get_read, char *leftover)
 		trimmed_read[i] = get_read[i];
 		i++;
 	}
-	trimmed_read[i] = '\n';
-	trimmed_read[i + 1] = '\0';
+	if (get_read[i] == '\n')
+	{
+		trimmed_read[i] = '\n';
+		trimmed_read[i + 1] = '\0';
+	}
+	else	
+		trimmed_read[i] = '\0';
 	i = 0;
 	
 
@@ -96,11 +101,7 @@ char	*get_line_trim(char *get_read, char *leftover)
 	{
 		len++;
 		while (get_read[len])
-		{
-			leftover[i] = get_read[len];
-			i++;
-			len++;
-		}
+			leftover[i++] = get_read[len++];
 		leftover[i] = '\0';
 	}
 	return (trimmed_read);
@@ -114,7 +115,7 @@ char	*get_next_line(int fd)
 	char *line;
 	char *output;
 	char *ptr_leftover;
-	static char leftover[BUFFER_SIZE + 1];
+	static char leftover[BUFFER_SIZE + 2];
 
 	ptr_leftover = leftover;
 
@@ -122,7 +123,7 @@ char	*get_next_line(int fd)
 		return (0);
 
 	get_read = get_chars(fd);
-	line = ft_strjoin(ptr_leftover, get_read);
+	line = ft_joinchars(ptr_leftover, get_read);
 	ptr_leftover = get_leftover(ptr_leftover, line);
 	output = get_line_trim(line, leftover);
 
@@ -133,10 +134,7 @@ char	*get_next_line(int fd)
 		return(NULL);
 	}
 
-
 	free(get_read);
-	get_read = NULL;
 	free(line);
-	line = NULL;
 	return (output);
 }

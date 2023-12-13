@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:30:46 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/13 16:12:32 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/13 20:15:50 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	main(void)
 	ptr = get_next_line(fd);
 	printf("\noutput 3 :%s", ptr);
 	free(ptr);
-
+/*
 	ptr = get_next_line(fd);
 	printf("\noutput 4 :%s", ptr);
 	free(ptr);
@@ -61,7 +61,7 @@ int	main(void)
 	ptr = get_next_line(fd);
 	printf("\noutput 8 :%s\n", ptr);
 	free(ptr);
-
+*/
 
 	return (0);
 }

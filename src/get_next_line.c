@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:29:01 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/13 15:45:15 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/13 17:27:51 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*get_chars(int fd)
 
 
 	line = "";
-	temp = malloc(BUFFER_SIZE + 1 * sizeof(char *));
+	temp = malloc(BUFFER_SIZE + 1 * sizeof(char));
 	temp[0] = '\0';
 	while (nbytes > 0)
 	{
@@ -81,7 +81,7 @@ char	*get_line_trim(char *get_read, char *leftover)
 	while (get_read[len] && get_read[len] != '\n')
 		len++;
 
-	trimmed_read = malloc(len + 2 * sizeof(char *));
+	trimmed_read = malloc(len + 2 * sizeof(char));
 	while (i < len)
 	{
 		trimmed_read[i] = get_read[i];

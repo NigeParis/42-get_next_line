@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:30:46 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/12 16:45:58 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/13 16:12:32 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,36 @@ int	main(void)
 	free(ptr);
 
 	ptr = get_next_line(fd);
-	printf("output 2 :%s", ptr);
+	printf("\noutput 2 :%s", ptr);
 	free(ptr);
 
 	ptr = get_next_line(fd);
-	printf("output 3 :%s", ptr);
+	printf("\noutput 3 :%s", ptr);
 	free(ptr);
 
 	ptr = get_next_line(fd);
-	printf("output 4 :%s\n", ptr);
+	printf("\noutput 4 :%s", ptr);
 	free(ptr);
+
+	ptr = get_next_line(fd);
+	printf("\noutput 5 :%s", ptr);
+	free(ptr);
+
+
+	ptr = get_next_line(fd);
+	printf("\noutput 6 :%s", ptr);
+	free(ptr);
+
+
+	ptr = get_next_line(fd);
+	printf("\noutput 7 :%s", ptr);
+	free(ptr);
+
+
+	ptr = get_next_line(fd);
+	printf("\noutput 8 :%s\n", ptr);
+	free(ptr);
+
 
 	return (0);
 }

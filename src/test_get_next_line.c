@@ -27,7 +27,7 @@ int	main(void)
 	int i = 0;
 	while ((ptr = get_next_line(fd)))
 	{
-		printf("\nOutput %i : %s", i, ptr);
+	printf("\nOutput %i : %s", i, ptr);
 		i++;
 		free(ptr);
 	}

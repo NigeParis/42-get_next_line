@@ -46,15 +46,14 @@ char	*get_line_trim(char *buffer)
 		return (NULL);
 	while (buffer[len] && buffer[len] != '\n')
 		len++;
-	trimmed_read = malloc(len + 1 * sizeof(char));
+	trimmed_read = malloc(len + 2 * sizeof(char));
 	while (i < len)
 	{
 		trimmed_read[i] = buffer[i];
 		i++;
 
 	}
-	if (buffer[i] == '\n')
-		trimmed_read[i] = '\0';
+	trimmed_read[i] = '\n';
 	i = 0;
 	return (trimmed_read);
 }

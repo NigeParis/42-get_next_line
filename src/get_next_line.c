@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:29:01 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/13 20:47:47 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/14 11:37:57 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ char	*get_chars(int fd)
 {
 	char	*line;
 	char 	temp[BUFFER_SIZE + 1];
-	char 	*tmp;
 	ssize_t	 nbytes = 1;
+	char *tmp = NULL;
 
 
 	line = "";
@@ -35,12 +35,13 @@ char	*get_chars(int fd)
 		}
 		temp[nbytes] = '\0';
 		if (line)
-			line = ft_strjoin(line, temp);
+		{
+			tmp  = ft_realloc(line, temp);
+			line = ft_strdup(tmp);
+			free(tmp);}
 		
 	}
-	tmp = ft_strdup(line);
-	free(line);
-	return(tmp);
+	return(line);
 } 
 
 char	*get_leftover(char *leftover, char *get_read)
@@ -123,7 +124,7 @@ char	*get_next_line(int fd)
 		return (0);
 
 	get_read = get_chars(fd);
-	line = ft_joinchars(ptr_leftover, get_read);
+	line = ft_strjoin(ptr_leftover, get_read);
 	ptr_leftover = get_leftover(ptr_leftover, line);
 	output = get_line_trim(line, leftover);
 

@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 06:03:01 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/13 19:18:29 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/14 11:37:12 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,39 +54,18 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (result);
 }
 
-
-char	*ft_joinchars(char *s1, char *s2)
+char	*ft_realloc(char *line,  char *temp)
 {
-	char	*result;
-	size_t	index;
-	size_t	len;
-	int 	flag;
+	int	size_line;
+	int size_temp;
+	char *new_line;
 
-	index = 0;
-	len = 0;
-	flag = 0;
+	size_line = ft_strlen(line);
+	size_temp = ft_strlen(temp);
 
-	if (s1[0] == '\0')
-		len = (ft_strlen(s2) + 2);
-	else
-		len = (ft_strlen(s1) + ft_strlen(s2) + 1);
-	result = malloc(len * sizeof(char));
-	if (!result)
-		return (NULL);
-	len = 0;
-	while (s1[index] != '\0')
-	{
-		result[index] = s1[index];
-		index++;
-	}
-	while (s2[len] != '\0')
-		result[index++] = s2[len++];
-	result[index] = '\0';
-	return (result);
+	new_line = ft_strjoin(line, temp);
+	return (new_line);
 }
-
-
-
 
 char	*ft_strchr(char *s, int c)
 {

@@ -12,7 +12,7 @@ SRC_OBJ=$(addprefix $(OBJ_DIR), $(OBJ))
 MAIN_SRC=$(addprefix $(SRC_DIR), $(MAIN))
 MAIN_OBJ=$(addprefix $(OBJ_DIR), $(MAIN:.c=.o))
 CC=cc
-###############################################################################
+############################################:###################################
 ## SOURCES 
 
 SRC_DIR=./src/

@@ -6,70 +6,35 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:29:01 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/14 11:37:57 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/14 17:25:09 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-
-
-char	*get_chars(int fd)
+char	*get_chars(int fd, char *buffer)
 {
 	char	*line;
-	char 	temp[BUFFER_SIZE + 1];
-	ssize_t	 nbytes = 1;
-	char *tmp = NULL;
+	int		nbytes = 1;
 
-
-	line = "";
-	temp[0] = '\0';
-	while (nbytes > 0)
+	line = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!line)
+		return(NULL);
+	while (nbytes != 0 && !ft_strchr(buffer, '\n'))
 	{
-		if (ft_strchr(temp, '\n'))
-			break;
-		nbytes = read(fd, temp, BUFFER_SIZE);
+		nbytes = read(fd, line, BUFFER_SIZE);
 		if (nbytes == -1)
 		{
-			return (NULL);
+			return (free(line), NULL);
 		}
-		temp[nbytes] = '\0';
-		if (line)
-		{
-			tmp  = ft_realloc(line, temp);
-			line = ft_strdup(tmp);
-			free(tmp);}
-		
+		line[nbytes] = 0;
+		buffer = ft_strjoin(buffer, line);
 	}
-	return(line);
-} 
-
-char	*get_leftover(char *leftover, char *get_read)
-{
-
-	int i;
-	int j;
-
-	i = 0;
-	while (get_read[i] && get_read[i] != '\n')
-		i++;
-	if (get_read[i] == '\n')
-		i++;
-	
-	j = 0;
-	while (get_read[i])
-	{
-		leftover[j] = get_read[i];
-		i++;
-		j++;
-	}
-	leftover[j] = '\0';
-	
-	return (leftover);
+	free(line);	
+	return(buffer);
 }
 
-
-char	*get_line_trim(char *get_read, char *leftover)
+char	*get_line_trim(char *buffer)
 {
 	char	*trimmed_read;
 	int		i;
@@ -77,65 +42,61 @@ char	*get_line_trim(char *get_read, char *leftover)
 
 	len = 0;
 	i = 0;
-	if (!*get_read)
+	if (!*buffer)
 		return (NULL);
-	while (get_read[len] && get_read[len] != '\n')
+	while (buffer[len] && buffer[len] != '\n')
 		len++;
-
-	trimmed_read = malloc(len + 2 * sizeof(char));
+	trimmed_read = malloc(len + 1 * sizeof(char));
 	while (i < len)
 	{
-		trimmed_read[i] = get_read[i];
+		trimmed_read[i] = buffer[i];
 		i++;
+
 	}
-	if (get_read[i] == '\n')
-	{
-		trimmed_read[i] = '\n';
-		trimmed_read[i + 1] = '\0';
-	}
-	else	
+	if (buffer[i] == '\n')
 		trimmed_read[i] = '\0';
 	i = 0;
-	
-
-	if (len < BUFFER_SIZE)
-	{
-		len++;
-		while (get_read[len])
-			leftover[i++] = get_read[len++];
-		leftover[i] = '\0';
-	}
 	return (trimmed_read);
 }
 
+char	*get_leftover(char *buffer)
+{
+	
+	char	*new_buffer;
+	int		i;
+	int		j;
+
+	i = 0;
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	if (buffer[i] == '\n')
+		i++;
+	new_buffer = malloc((i + 1) * sizeof(char));
+	if (!new_buffer)
+		return (NULL);
+	j = 0;
+	while (buffer[i])
+	{
+		new_buffer[j] = buffer[i];
+		i++;
+		j++;
+	}
+	new_buffer[j] = '\0';
+	free(buffer);
+	return (new_buffer);
+}
 
 char	*get_next_line(int fd)
 {
-	
-	char *get_read;
-	char *line;
-	char *output;
-	char *ptr_leftover;
-	static char leftover[BUFFER_SIZE + 2];
-
-	ptr_leftover = leftover;
+	static char	*buffer;
+	char		*output;
 
 	if ((fd <= 0 || BUFFER_SIZE <= 0) || (read(fd, NULL, 0) < 0))
 		return (0);
-
-	get_read = get_chars(fd);
-	line = ft_strjoin(ptr_leftover, get_read);
-	ptr_leftover = get_leftover(ptr_leftover, line);
-	output = get_line_trim(line, leftover);
-
-
-	if ((read(fd, NULL, 0) == 0) && (*line == '\0'))
-	{
-		*ptr_leftover = 0;
-		return(NULL);
-	}
-
-	free(get_read);
-	free(line);
+	buffer = get_chars(fd, buffer);
+	if (!buffer)
+		return (NULL);
+	output = get_line_trim(buffer);
+	buffer = get_leftover(buffer);
 	return (output);
 }

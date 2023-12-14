@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:25:41 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/14 11:35:37 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/14 15:35:31 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdlib.h>
 
 char 	*get_next_line(int fd);
-int		ft_strlen(char *str);
+size_t	ft_strlen(char *str);
 char	*ft_realloc(char *line,  char *temp);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strdup(char *s1);

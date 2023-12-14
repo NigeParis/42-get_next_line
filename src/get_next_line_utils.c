@@ -6,13 +6,13 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 06:03:01 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/14 11:37:12 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/14 18:18:48 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int		ft_strlen(char *str)
+size_t		ft_strlen(char *str)
 {
 	int i;
 
@@ -29,19 +29,17 @@ char	*ft_strjoin(char *s1, char *s2)
 	char	*result;
 	size_t	index;
 	size_t	len;
-	int 	flag;
 
 	index = 0;
 	len = 0;
-	flag = 0;
-
-	if (s1[0] == '\0')
-		len = (ft_strlen(s2) + 1);
-	else
-		len = (ft_strlen(s1) + ft_strlen(s2) + 1);
-	result = malloc(len * sizeof(char));
+	if (!s1 && !s2)
+		return(0);
+	if(!s1)
+		return(ft_strdup(s2));	
+	len = (ft_strlen(s1) + ft_strlen(s2));
+	result = malloc((len * sizeof(char)) + 1);
 	if (!result)
-		return (NULL);
+		return (free(s1), NULL);
 	len = 0;
 	while (s1[index] != '\0')
 	{
@@ -51,31 +49,18 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s2[len] != '\0')
 		result[index++] = s2[len++];
 	result[index] = '\0';
+	free(s1);
 	return (result);
 }
 
-char	*ft_realloc(char *line,  char *temp)
+
+char	*ft_strchr(char *str, int find)
 {
-	int	size_line;
-	int size_temp;
-	char *new_line;
-
-	size_line = ft_strlen(line);
-	size_temp = ft_strlen(temp);
-
-	new_line = ft_strjoin(line, temp);
-	return (new_line);
-}
-
-char	*ft_strchr(char *s, int c)
-{
-	char			*str;
-	unsigned char	find;
 	int				i;
 
-	find = c;
-	str = s;
 	i = 0;
+	if (!str)
+		return (0);
 	if (find == '\0')
 	{
 		while (*str)
@@ -92,6 +77,8 @@ char	*ft_strchr(char *s, int c)
 }
 
 
+
+
 char	*ft_strdup(char *s1)
 {
 	char	*str;
@@ -100,9 +87,9 @@ char	*ft_strdup(char *s1)
 
 	to_copy = (char *)s1;
 	size = ft_strlen(s1);
-	str = (char *)malloc((size + 1) * sizeof(char));
+	str = (char *)malloc((size * sizeof(*s1)) + 1);
 	if (str == NULL)
-		return (NULL);
+		return (0);
 	ft_strlcpy(str, to_copy, size + 1);
 	return (str);
 }
@@ -125,8 +112,8 @@ size_t	ft_strlcpy(char *dst, char *src, size_t dstsize)
 		return (len);
 	if (len == 0)
 		*dest = '\0';
-	if (dstsize < 1 || len < 2)
-		return (len);
+//	if (dstsize < 1 || len < 2)
+//		return (len);
 	while (i < dstsize - 1 && tocopy[i] != '\0')
 	{
 		dest[i] = tocopy[i];

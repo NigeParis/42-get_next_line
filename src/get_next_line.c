@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:29:01 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/14 17:25:09 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/18 11:08:37 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,22 @@ char	*get_line_trim(char *buffer)
 
 	len = 0;
 	i = 0;
-	if (!*buffer)
-		return (NULL);
+	if (!buffer[0])
+		return (0);
 	while (buffer[len] && buffer[len] != '\n')
 		len++;
-	trimmed_read = malloc(len + 2 * sizeof(char));
-	while (i < len)
+	trimmed_read = malloc(ft_strlen(buffer) + 2 * sizeof(char));
+	while (buffer[i] && buffer[i] != '\n')
 	{
 		trimmed_read[i] = buffer[i];
 		i++;
-
 	}
-	trimmed_read[i] = '\n';
-	i = 0;
+	if (buffer[i] == '\n')
+	{
+		trimmed_read[i] = buffer[i];
+		i++;
+	}
+	trimmed_read[i] = '\0';
 	return (trimmed_read);
 }
 
@@ -68,9 +71,11 @@ char	*get_leftover(char *buffer)
 	i = 0;
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
+	if (!buffer[i])
+		return (free(buffer) , NULL);
 	if (buffer[i] == '\n')
 		i++;
-	new_buffer = malloc((i + 1) * sizeof(char));
+	new_buffer = malloc((ft_strlen(buffer) + 1) * sizeof(char));
 	if (!new_buffer)
 		return (NULL);
 	j = 0;
@@ -90,11 +95,11 @@ char	*get_next_line(int fd)
 	static char	*buffer;
 	char		*output;
 
-	if ((fd <= 0 || BUFFER_SIZE <= 0) || (read(fd, NULL, 0) < 0))
+	if ((fd < 0 || BUFFER_SIZE <= 0) || (read(fd, NULL, 0) < 0))
 		return (0);
 	buffer = get_chars(fd, buffer);
 	if (!buffer)
-		return (NULL);
+		return (0);
 	output = get_line_trim(buffer);
 	buffer = get_leftover(buffer);
 	return (output);

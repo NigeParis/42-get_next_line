@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:30:46 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/14 15:35:40 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/18 10:47:39 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	main(void)
 	printf("\noutput 8 :%s\n", ptr);
 	free(ptr);
 */
-	//close(fd);
+	close(fd);
 
 	return (0);
 }

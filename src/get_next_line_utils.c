@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 06:03:01 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/14 18:18:48 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/18 10:09:25 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,9 @@ char	*ft_strjoin(char *s1, char *s2)
 	if (!result)
 		return (free(s1), NULL);
 	len = 0;
-	while (s1[index] != '\0')
-	{
-		result[index] = s1[index];
-		index++;
-	}
+	while (s1[len] != '\0')
+		result[index++] = s1[len++];
+	len = 0;
 	while (s2[len] != '\0')
 		result[index++] = s2[len++];
 	result[index] = '\0';
@@ -112,8 +110,6 @@ size_t	ft_strlcpy(char *dst, char *src, size_t dstsize)
 		return (len);
 	if (len == 0)
 		*dest = '\0';
-//	if (dstsize < 1 || len < 2)
-//		return (len);
 	while (i < dstsize - 1 && tocopy[i] != '\0')
 	{
 		dest[i] = tocopy[i];

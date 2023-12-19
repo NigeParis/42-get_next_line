@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:29:01 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/19 06:35:32 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/19 06:54:39 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,15 +92,15 @@ char	*get_leftover(char *buffer)
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
+	static char	*buffer[2048];
 	char		*output;
 
 	if ((fd < 0 || BUFFER_SIZE <= 0) || (read(fd, NULL, 0) < 0))
 		return (0);
-	buffer = get_chars(fd, buffer);
-	if (!buffer)
+	buffer[fd] = get_chars(fd, buffer[fd]);
+	if (!buffer[fd])
 		return (0);
-	output = get_line_trim(buffer);
-	buffer = get_leftover(buffer);
+	output = get_line_trim(buffer[fd]);
+	buffer[fd] = get_leftover(buffer[fd]);
 	return (output);
 }

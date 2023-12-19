@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_get_next_line.c                               :+:      :+:    :+:   */
+/*   test_get_next_line_bonus.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:30:46 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/19 06:49:48 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/19 07:02:30 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,33 @@
 
 int	main(void)
 {
-	int fd;	
+	int fd[2];	
 	char *ptr;
 
-	fd = open("text.txt", O_RDONLY);
-	if (!fd)
+	fd[0] = open("text.txt", O_RDONLY);
+	if (!fd[0])
+		return (write(1, "error",5));
+
+
+	fd[1] = open("text2.txt", O_RDONLY);
+	if (!fd[1])
 		return (write(1, "error",5));
 	int i = 0;
-	while ((ptr = get_next_line(fd)))
+	int j = 0;
+
+
+	while ((ptr = get_next_line(fd[j])))
 	{
-	printf("\nOutput %i : %s", i, ptr);
+	printf("\nOutput file %d %i : %s", j, i, ptr);
 		i++;
 		free(ptr);
+		if (j == 1)
+			j = 0;
+		else
+			j = 1;
 	}
-	close(fd);
+	close(fd[0]);
+	close(fd[1]);
 /*
 	ptr = get_next_line(fd);
 	printf("\noutput 1 :%s", ptr);
@@ -68,7 +81,6 @@ int	main(void)
 	printf("\noutput 8 :%s\n", ptr);
 	free(ptr);
 */
-	close(fd);
 
 	return (0);
 }

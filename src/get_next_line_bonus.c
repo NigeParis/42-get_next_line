@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:29:01 by nrobinso          #+#    #+#             */
-/*   Updated: 2023/12/19 06:54:39 by nrobinso         ###   ########.fr       */
+/*   Updated: 2023/12/19 10:46:05 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ char	*get_next_line(int fd)
 	static char	*buffer[2048];
 	char		*output;
 
-	if ((fd < 0 || BUFFER_SIZE <= 0) || (read(fd, NULL, 0) < 0))
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
 	buffer[fd] = get_chars(fd, buffer[fd]);
 	if (!buffer[fd])
